@@ -1,0 +1,15 @@
+{% extends "payapp/base.html" %}
+{% load crispy_forms_tags %} 
+{% block title %}
+    Create an Account
+{% endblock title %}
+
+{% block content %}
+    <h1>Register</h1>
+    <form method="post" class="form-group">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit" class="btn btn-success">Register</button>
+    </form>
+    <p class="text-center">Already have an account? <a href="/webapps2023/login">Login</a>.</p>
+{% endblock content %}

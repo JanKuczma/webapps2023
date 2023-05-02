@@ -1,0 +1,12 @@
+{% extends 'payapp/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container">
+        <h1>Request Payment</h1>
+        <form method="POST" action="{% url 'request' %}">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <button type="submit" class="btn btn-primary">Request</button>
+        </form>
+    </div>
+{% endblock %}

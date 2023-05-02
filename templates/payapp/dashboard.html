@@ -1,0 +1,115 @@
+{% extends 'payapp/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h1>Welcome {{ user.username }}</h1>
+
+    <h2>Account Balance: {{ user.account.balance }} {{ user.account.currency }}</h2>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th><h3>Payment Requests</h3></th>
+            <th class="table-success">Paid</th>
+            <th class="table-warning">Pending</th>
+            <th class="table-danger">Rejected</th>
+        </tr>
+        </thead>
+    </table>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Amount</th>
+            <th>Transaction ID / Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for payment_request in payment_requests %}
+            {% if payment_request.status == 'P' %}
+                <tr class="table-warning">
+                    {% elif  payment_request.status == 'R' %}
+                <tr class="table-danger">
+                {% else %}
+                <tr class="table-success">
+            {% endif %}
+                <td>{{ payment_request.date }}</td>
+                <td>{{ payment_request.from_account }}</td>
+                <td>{{ payment_request.to_account }}</td>
+                <td>{{ payment_request.amount }} {{ payment_request.to_account.account.currency }}</td>
+
+        {% if payment_request.status == 'P' and payment_request.from_account == request.user %}
+            <td>
+                <form method="POST" action="{% url 'payment' %}">
+                {% csrf_token %}
+                    <input type="hidden" name="payment_request" value={{ payment_request.id }} />
+                <button type="submit" class="btn btn-success">Pay</button>
+                </form>
+                <form method="POST" action="{% url 'reject' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="payment_request" value={{ payment_request.id }} />
+                    <button type="submit" class="btn btn-danger">Reject</button>
+                </form>
+            </td>
+            {% elif payment_request.status == 'A' %}
+            <td>{{ payment_request.transaction.id }}</td>
+            {% else %}
+            <td></td>
+        {% endif %}
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">No payment requests yet.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </br>
+    </br>
+        <table class="table">
+            <thead>
+            <tr>
+                <th><h3>Transaction History</h3></th>
+            <th class="table-success">In</th>
+            <th class="table-danger">Out</th>
+            </tr>
+            </thead>
+        </table>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Amount</th>
+            <th>Conversion Rate</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+            {% if transaction.to_account == request.user %}
+                <tr class="table-success">
+                    {% elif transaction.from_account == request.user %}
+                <tr class="table-danger">
+            {% else %}
+                <tr>
+            {% endif %}
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.date }}</td>
+                <td>{{ transaction.from_account }}</td>
+                <td>{{ transaction.to_account }}</td>
+                <td>{{ transaction.amount }} {{ transaction.from_account.account.currency }}</td>
+                <td>{{ transaction.from_account.account.currency }} {{ transaction.conversion_rate }} {{ transaction.to_account.account.currency }}</td>
+        </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4">No transactions yet.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'payapp/base.html' %}
+{% load crispy_forms_tags %} 
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+    <h1>Profile</h1>
+    <table>
+    <tr>
+        <td><h4>Name: </h4></td>
+        <td></td>
+        <td><h4>{{ user.first_name }} {{ user.last_name }}</h4></td>
+    </tr>
+        <tr>
+            <td><b><h4>Username: </h4></b></td>
+            <td></td>
+            <td><h4>{{ user.username }}</h4></td>
+        </tr>
+        <tr>
+            <td><b><h4>E-mail: </h4></b></td>
+            <td></td>
+            <td><h4>{{ user.email }}</h4></td>
+        </tr>
+        <tr>
+            <td><b><h4>Currency: </h4></b></td>
+            <td></td>
+            <td><h4>{{ user.account.currency }}</h4></td>
+        </tr>
+    </table>
+    </br>
+    </br>
+    <h2>Change password</h2>
+    <form method="post" class="form-group">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit" class="btn btn-success">Change</button>
+    </form>
+{% endblock %}
