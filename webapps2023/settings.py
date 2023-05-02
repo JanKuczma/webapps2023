@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-ay*@nr)8q(2_-+xpc^t@(bfeb$xs#92ms926#20g37mv$h2z#j"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['52.56.93.59']
 
 
 # Application definition
@@ -40,9 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'django_extensions',
     'crispy_forms',
     'crispy_bootstrap5',
-    'bootstrap5',
     'register',
     'payapp',
     'admin_app',
@@ -139,3 +139,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+STATIC_ROOT = '/var/www/mysite/assets/'
