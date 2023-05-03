@@ -22,19 +22,19 @@ MESSAGE_TAGS = {
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-try:
-    SECRET_KEY = os.environ["SECRET_KEY"]
-except KeyError as e:
-    raise RuntimeError("Could not find a SECRET_KEY in environment") from e
+# to be changed or moved to .env
+SECRET_KEY = '1-$6$m^gn+h_4ms^01wdl*+w_!xoe4o99zf4su%_f65n2t-'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['18.170.118.149']
+# ALLOWED_HOSTS = ['jansuz.tech', 'www.janusz.tech']
+ALLOWED_HOSTS = []
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 
 # Application definition
